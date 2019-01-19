@@ -22,7 +22,14 @@ api = Api(app)
 
 model_path = 'checkpoints/model_align/'
 load_epoch = 40
-converter = None
+
+# load pretrained GANimation model and run
+epoch_num = feedforward.find_epoch(model_path, load_epoch)
+load_filename_generator = 'net_epoch_%s_id_G.pth' % (epoch_num)
+load_filename_discriminator = 'net_epoch_%s_id_D.pth' % (epoch_num)
+pathG = os.path.join(model_path, load_filename_generator)
+pathD = os.path.join(model_path, load_filename_discriminator)
+convertor = feedforward.feedForward(pathG, pathD)
 
 class make_cheese(Resource):
     def post(self):
@@ -67,13 +74,5 @@ class make_cheese(Resource):
 api.add_resource(make_cheese, '/api')
 
 if __name__ == '__main__':
-    # load pretrained GANimation model and run
-    epoch_num = feedforward.find_epoch(model_path, load_epoch)
-    load_filename_generator = 'net_epoch_%s_id_G.pth' % (epoch_num)
-    load_filename_discriminator = 'net_epoch_%s_id_D.pth' % (epoch_num)
-    pathG = os.path.join(model_path, load_filename_generator)
-    pathD = os.path.join(model_path, load_filename_discriminator)
-    convertor = feedforward.feedForward(pathG, pathD)
-
     app.debug = True
     app.run()
