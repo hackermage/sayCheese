@@ -152,8 +152,11 @@ def main():
         #print(np.shape(processed_face), np.shape(maskA), maskA.dtype)
 
     result  = cv2.resize(result,(0,0), fx=0.5, fy=0.5)
-    cv2.imshow('result', result/254.0)
-    cv2.waitKey()
+
+    #timestamp = calendar.timegm(time.gmtime())
+    cv2.imwrite("./results/processedface_"+image_name+".jpg", result)
+    #cv2.imshow('result', result/254.0)
+    #cv2.waitKey()
 '''
     while True:
         key = cv2.waitKey()
