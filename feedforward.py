@@ -18,7 +18,7 @@ class feedForward:
     def __init__(self, pathG, pathD):
         # load pre-trained generator here
         self._modelG = cruzhack_forward.generatorFoward(conv_dim=64, c_dim=17, repeat_num=6)
-        self._modelG.load_state_dict(torch.load(pathG, map_location='cpu'))
+        self._modelG.load_state_dict(torch.load(pathG))
         self._modelG.eval()
         self._transform = transforms.Compose([transforms.ToTensor(),
                                               transforms.Normalize(mean=[0.5, 0.5, 0.5],
@@ -26,7 +26,7 @@ class feedForward:
                                               ])
         #load pre-trained discriminator here
         self._modelD = cruzhack_forward.Discriminator(image_size=128, conv_dim=64, c_dim=17, repeat_num=6)
-        self._modelD.load_state_dict(torch.load(pathD, map_location='cpu'))
+        self._modelD.load_state_dict(torch.load(pathD))
         self._modelD.eval()
 
     def Foward(self, face, desired_expression):
@@ -88,12 +88,11 @@ def main():
     parser.add_argument('--img_path', type=str, 
                         default='/Users/xyli1905/Projects/Datasets/imgs_178/000009.png', 
                         help='path to the test image')
-    parser.add_argument('--model_path', type=str, default='./checkpoints/model_align/', 
-                        help='path to the pretrained model')
+    # parser.add_argument('--model_path', type=str, default='./checkpoints/model_align/', 
+    #                     help='path to the pretrained model')
     parser.add_argument('--load_epoch', type=int, default=-1, help='specify the model to be loaded')
-
-    parser.add_argument('--AU', type=str, default = './dataset/aus_openface.pkl', 
-                        help = 'loading pre-processing AU')
+    # parser.add_argument('--AU', type=str, default = './dataset/aus_openface.pkl', 
+    #                     help = 'loading pre-processing AU')
 
     arg = parser.parse_args()
 
@@ -118,9 +117,13 @@ def main():
     pathG = os.path.join(arg.model_path, load_filename_generator)
     pathD = os.path.join(arg.model_path, load_filename_discriminator)
 
-    convertor = feedFoward(pathG, pathD)
+    convertor = feedForward(pathG, pathD)
 
-    # define the target AU, for test use only
+    # define the target AU, for test use only, row_1 big smile, row_2 small smile
+    target_AU = np.array(
+    [[0.25, 0.11, 0.2 , 0.16, 1.92, 1.03, 0.3 , 2.15, 2.88, 1.61, 0.03, 0.09, 0.16, 0.11, 2.25, 0.37, 0.05],
+     [0.26, 0.13, 0.13, 0.22, 0.3 , 0.26, 0.12, 0.4 , 0.96, 1.37, 0.07, 0.27, 0.24, 0.21, 0.21, 0.25, 0.04]], dtype = np.float)
+
     # target_AU = np.array(
     # [[0.2 , 0.12, 0.1 , 0.24, 0.05, 0.12, 0.08, 0.11, 0.19, 0.22, 0.1 , 0.09, 0.15, 0.07, 0.11, 0.16, 0.03],
     #  [0.4 , 0.1 , 0.28, 0.45, 0.46, 0.32, 0.36, 1.61, 0.72, 0.45, 0.34, 0.28, 0.29, 0.09, 0.34, 0.3 , 0.07],
@@ -142,31 +145,6 @@ def main():
     #  [0.34, 0.1 , 0.48, 0.23, 1.44, 0.89, 0.68, 1.84, 1.63, 1.7 , 0.22, 0.63, 0.34, 0.32, 0.53, 0.32, 0.07],
     #  [0.19, 0.06, 0.16, 0.14, 1.59, 1.9 , 0.27, 1.32, 2.38, 0.92, 0.04, 0.03, 0.2 , 0.08, 1.98, 0.45, 0.04],
     #  [0.32, 0.06, 0.49, 0.17, 2.37, 2.65, 0.71, 2.16, 2.65, 1.4 , 0.08, 0.07, 0.32, 0.13, 2.29, 0.55, 0.05]], dtype = np.float)
-
-    target_AU = np.array(
-    [[0.3 , 0.18, 0.1 , 0.25, 0.8 , 0.46, 0.13, 0.94, 1.89, 0.87, 0.03, 0.05, 0.15, 0.07, 1.49, 0.39, 0.03],
-     [0.22, 0.09, 0.1 , 0.17, 1.46, 1.83, 0.27, 1.16, 2.23, 0.9 , 0.05, 0.04, 0.22, 0.08, 1.78, 0.44, 0.04],
-     [2.08, 1.28, 0.48, 1.6 , 0.51, 0.43, 0.12, 0.7 , 0.75, 0.77, 0.31, 0.53, 0.43, 0.2 , 0.55, 0.44, 0.07],
-     [0.24, 0.06, 0.25, 0.14, 2.31, 2.31, 0.57, 2.15, 2.8 , 1.43, 0.05, 0.07, 0.26, 0.12, 2.35, 0.51, 0.05],
-     [0.46, 0.29, 0.21, 0.38, 0.21, 0.39, 0.14, 0.47, 0.35, 0.33, 0.27, 0.15, 0.26, 0.09, 0.81, 1.71, 0.07],
-     [0.19, 0.12, 0.1 , 0.23, 0.05, 0.15, 0.08, 0.11, 0.19, 0.21, 0.1 , 0.09, 0.16, 0.06, 0.16, 0.28, 0.04],
-     [0.86, 0.24, 1.63, 0.36, 1.64, 2.21, 0.59, 1.66, 1.88, 1.1 , 0.14, 0.12, 0.32, 0.13, 1.71, 0.54, 0.07],
-     [0.31, 0.15, 0.16, 0.21, 1.6 , 0.71, 0.22, 1.92, 2.69, 1.47, 0.03, 0.08, 0.16, 0.1 , 2.09, 0.34, 0.04],
-     [0.59, 0.27, 0.33, 0.47, 0.6 , 0.39, 0.27, 0.78, 0.52, 0.75, 0.61, 1.68, 0.54, 0.43, 0.1 , 0.39, 0.08],
-     [0.32, 0.11, 0.22, 0.25, 0.58, 1.56, 0.27, 0.34, 0.83, 0.5 , 0.15, 0.14, 0.35, 0.14, 0.44, 0.38, 0.04],
-     [0.41, 0.1 , 0.28, 0.44, 0.45, 0.32, 0.35, 1.57, 0.73, 0.42, 0.32, 0.25, 0.28, 0.08, 0.41, 0.33, 0.07],
-     [0.24, 0.12, 0.12, 0.22, 0.29, 0.26, 0.11, 0.36, 1.  , 1.27, 0.06, 0.22, 0.23, 0.19, 0.26, 0.26, 0.03],
-     [1.  , 0.33, 1.94, 0.54, 0.3 , 0.66, 0.25, 0.57, 0.34, 0.52, 0.33, 0.32, 0.3 , 0.13, 0.26, 0.37, 0.09],
-     [0.35, 0.11, 0.38, 0.23, 1.36, 0.91, 0.6 , 1.67, 1.63, 1.66, 0.2 , 0.56, 0.34, 0.3 , 0.51, 0.31, 0.07],
-     [1.49, 0.81, 0.23, 0.45, 0.14, 0.22, 0.07, 0.21, 0.28, 0.29, 0.23, 0.18, 0.31, 0.08, 0.25, 0.29, 0.05],
-     [0.5 , 0.37, 0.17, 1.52, 0.09, 0.18, 0.1 , 0.21, 0.22, 0.22, 0.19, 0.15, 0.21, 0.09, 0.23, 0.3 , 0.04],
-     [0.62, 0.2 , 0.64, 0.43, 1.08, 1.89, 0.53, 0.91, 0.88, 0.7 , 0.4 , 0.56, 0.6 , 0.25, 0.48, 0.44, 0.06],
-     [0.27, 0.15, 0.17, 0.36, 0.13, 0.25, 0.12, 0.27, 0.34, 0.39, 0.15, 0.18, 0.2 , 0.1 , 0.24, 0.42, 0.04],
-     [0.31, 0.15, 0.17, 0.24, 0.9 , 0.57, 0.21, 1.12, 1.8 , 1.1 , 0.07, 0.17, 0.19, 0.13, 1.19, 0.39, 0.04],
-     [1.52, 0.84, 0.55, 1.08, 0.28, 0.31, 0.11, 0.5 , 0.43, 0.51, 0.32, 0.43, 0.37, 0.15, 0.35, 0.44, 0.06],
-     [0.29, 0.1 , 0.28, 0.18, 1.89, 1.73, 0.39, 1.84, 2.61, 1.3 , 0.05, 0.08, 0.22, 0.11, 2.12, 0.44, 0.04],
-     [0.92, 0.35, 0.58, 0.68, 1.43, 2.54, 0.64, 0.91, 0.8 , 0.58, 0.6 , 0.8 , 0.98, 0.3 , 0.39, 0.35, 0.05]], dtype = np.float)
-    # target_AU = np.array([0.25, 0.11, 0.2 , 0.16, 1.92, 1.03, 0.3 , 2.15, 2.88, 1.61, 0.03, 0.09, 0.16, 0.11, 2.25, 0.37, 0.05], dtype = np.float)
 
     # # find original AU of input image using discrinator of GANimation, for test use only
     out_real, out_aux = convertor.FindAU(real_face) # out_aux is the AU value from D 
