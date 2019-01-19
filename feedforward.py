@@ -10,6 +10,7 @@ from networks import cruzhack_forward
 import utils.util as util
 import utils.cruzhack_utils as face
 import pickle
+import calendar
 import time
 import random
 
@@ -123,7 +124,7 @@ def main():
     expressions = np.ndarray((5,17), dtype = np.float)
 
     # define the target AU, for test use only
-    target_AU = np.array([0.17, 0.1 , 0.1 , 0.17, 1.11, 0.48, 0.15, 1.35, 2.3 , 1.19, 0.02, 0.05, 0.13, 0.08, 1.7 , 0.3 , 0.03], dtype = np.float)
+    target_AU = np.array([0.25, 0.11, 0.2 , 0.16, 1.92, 1.03, 0.3 , 2.15, 2.88, 1.61, 0.03, 0.09, 0.16, 0.11, 2.25, 0.37, 0.05], dtype = np.float)
 
     # find original AU of input image using discrinator of GANimation, for test use only
     out_real, out_aux = convertor.FindAU(real_face) # out_aux is the AU value from D 
@@ -153,8 +154,10 @@ def main():
 
     result  = cv2.resize(result,(0,0), fx=0.5, fy=0.5)
 
-    #timestamp = calendar.timegm(time.gmtime())
-    cv2.imwrite("./results/processedface_"+image_name+".jpg", result)
+    timestamp = calendar.timegm(time.gmtime())
+    image_out_name = "./results/processedface_"+image_name+"-"+str(timestamp)+".jpg"
+    cv2.imwrite(image_out_name, result)
+    print("Processed image saved as %s" % image_out_name)
     #cv2.imshow('result', result/254.0)
     #cv2.waitKey()
 '''
