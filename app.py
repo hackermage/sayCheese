@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
-import feedforward.feedFoward
+from feedforward import feedFoward
 app = Flask(__name__)
 api = Api(app)
 
