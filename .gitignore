@@ -105,3 +105,4 @@ venv.bak/
 
 #local folder
 model_align
+results/*.jpg
