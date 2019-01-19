@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
 from feedforward import feedForward
+import pybase64
 app = Flask(__name__)
 api = Api(app)
 
@@ -55,7 +56,7 @@ class make_cheese(Resource):
 
         return {'image_key': base64.encodebytes(result)}
 
-api.add_resource(Simple_Response, '/api')
+api.add_resource(make_cheese, '/api')
 
 if __name__ == '__main__':
     
