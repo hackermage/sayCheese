@@ -14,7 +14,7 @@ import calendar
 import time
 import random
 
-class feedFoward:
+class feedForward:
     def __init__(self, pathG, pathD):
         # load pre-trained generator here
         self._modelG = cruzhack_forward.generatorFoward(conv_dim=64, c_dim=17, repeat_num=6)
