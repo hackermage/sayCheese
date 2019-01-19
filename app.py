@@ -22,8 +22,7 @@ api = Api(app)
 
 model_path = 'checkpoints/model_align/'
 load_epoch = 40
-pathG      = None
-pathD      = None
+converter = None
 
 class make_cheese(Resource):
     def post(self):
@@ -40,15 +39,6 @@ class make_cheese(Resource):
         img_raw = cv2.resize(img_raw,(0,0), fx=1, fy=1)
         img = cv2.cvtColor(img_raw, cv2.COLOR_BGR2RGB)
         real_face, face_origin_pos = face.face_crop_and_align(img)
-
-        # load pretrained GANimation model and run
-        epoch_num = feedforward.find_epoch(model_path, load_epoch)
-        load_filename_generator = 'net_epoch_%s_id_G.pth' % (epoch_num)
-        load_filename_discriminator = 'net_epoch_%s_id_D.pth' % (epoch_num)
-        pathG = os.path.join(model_path, load_filename_generator)
-        pathD = os.path.join(model_path, load_filename_discriminator)
-
-        convertor = feedforward.feedForward(pathG, pathD)
 
         expressions = np.ndarray((5,17), dtype = np.float)
 
@@ -77,7 +67,13 @@ class make_cheese(Resource):
 api.add_resource(make_cheese, '/api')
 
 if __name__ == '__main__':
-    
+    # load pretrained GANimation model and run
+    epoch_num = feedforward.find_epoch(model_path, load_epoch)
+    load_filename_generator = 'net_epoch_%s_id_G.pth' % (epoch_num)
+    load_filename_discriminator = 'net_epoch_%s_id_D.pth' % (epoch_num)
+    pathG = os.path.join(model_path, load_filename_generator)
+    pathD = os.path.join(model_path, load_filename_discriminator)
+    convertor = feedforward.feedForward(pathG, pathD)
 
     app.debug = True
     app.run()
