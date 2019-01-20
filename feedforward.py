@@ -111,7 +111,7 @@ def load_target_AU():
      [0.26, 0.13, 0.13, 0.22, 0.3 , 0.26, 0.12, 0.4 , 0.96, 1.37, 0.07, 0.27, 0.24, 0.21, 0.21, 0.25, 0.04]], dtype = np.float)
     return target_AU
 
-def img_processing(img_raw, convertor):
+def img_processing(img_raw, convertor, test=True):
 
     img = cv2.cvtColor(img_raw, cv2.COLOR_BGR2RGB)
 
@@ -140,17 +140,29 @@ def img_processing(img_raw, convertor):
         expressions[i] = c * i + target_AU
 
     # run model for above expressions
-    result = np.zeros((1, img_raw.shape[1] * (expression_num + 1), 3))
-    for j in range(row_num):
-        current_result = img_raw
-        for i in range(expression_num):
-            processed_face, _ = convertor.Foward(real_face, expressions[i, j])
-            new_img = face.face_place_back(img_raw, processed_face, face_origin_pos)
-            current_result = np.hstack((current_result, new_img))
-        result = np.vstack((result, current_result))
+    if test :
+        result = np.zeros((1, img_raw.shape[1] * (expression_num + 1), 3))
+        for j in range(row_num):
+            current_result = img_raw
+            for i in range(expression_num):
+                processed_face, _ = convertor.Foward(real_face, expressions[i, j])
+                new_img = face.face_place_back(img_raw, processed_face, face_origin_pos)
+                current_result = np.hstack((current_result, new_img))
+            result = np.vstack((result, current_result))
 
-    return result
-    #return dict_smile_face
+        return result
+    else:
+        big_smile = []
+        small_smile = []
+        for j in range(row_num):
+            for i in range(expression_num):
+                processed_face, _ = convertor.Foward(real_face, expressions[i, j])
+                new_img = face.face_place_back(img_raw, processed_face, face_origin_pos)
+                big_smile.append(new_img) if j == 0 else small_smile.append(new_img)
+
+        dict_smile_face = {"big_smile": big_smile, "small_smile": small_smile}
+
+        return dict_smile_face
 
 # =========================================================== #
 # below, the main(), is a demo for how to use the feedforward #
@@ -188,21 +200,24 @@ def main():
 
     convertor = feedForward(pathG, pathD)
 
+    if_test = True # for test only
     #dict_smile_face = img_processing(img, convertor, original_AU, target_AU)
-    result = img_processing(img_raw, convertor)
+    result = img_processing(img_raw, convertor, test = if_test)
 
-    timestamp = calendar.timegm(time.gmtime())
-    image_out_name = "./results/processedface_"+image_name+"-"+str(timestamp)+".jpg"
-    cv2.imwrite(image_out_name, result)
-    print("Processed image saved as %s" % image_out_name)
-    #cv2.imshow('result', result/254.0)
-    #cv2.waitKey()
-'''
-    while True:
-        key = cv2.waitKey()
-        if key == 27:
-            break;
-'''
+    if if_test :
+        timestamp = calendar.timegm(time.gmtime())
+        image_out_name = "./results/processedface_"+image_name+"-"+str(timestamp)+".jpg"
+        cv2.imwrite(image_out_name, result)
+        print("Processed image saved as %s" % image_out_name)
+        #cv2.imshow('result', result/254.0)
+        #cv2.waitKey()
+    else:
+        for i in range(5):
+            image_tmp_1 = result["big_smile"][i]
+            image_tmp_2 = result["small_smile"][i]
+            cv2.imshow('big_smile', image_tmp_1/254.0)
+            cv2.imshow('small_smile', image_tmp_2/254.0)
+            cv2.waitKey()
 
 if __name__ == '__main__':
     main()
