@@ -6,7 +6,7 @@ In this project, we utilize Albert Pumarola's novel GAN conditioning scheme and 
 
 Presently, our model can generate natrual looked smiles in different styles and intensities for a large group of different types of faces, and of couse we are working on improving the model's performance.
 
-Check out the repo for our ios app https://github.com/JinchengKim/Cruzhacks_iOS. For a simple tour of the app's usage, 
+Check out the repo for our [ios app](https://github.com/JinchengKim/Cruzhacks_iOS). For a simple tour of the app's usage, 
 1. take picture within the app, or open one from your album
 2. choose the face your want to SayCheese
 3. wait a moment to see the magic, and it's done!
