@@ -37,6 +37,7 @@ def encode_img(new_img):
 app.config['TESTING'] = True
 model_path = 'checkpoints/model_align/'
 load_epoch = 40
+list_len = 3
 
 load pretrained GANimation model and run
 epoch_num = feedforward.find_epoch(model_path, load_epoch)
@@ -58,7 +59,7 @@ class make_cheese(Resource):
 
         # find original AU of input image using discriminator of GANimation, for test use only
         try:
-            processed_img_dict = feedforward.img_processing(img_raw, convertor, test=False)
+            processed_img_dict = feedforward.img_processing(img_raw, convertor, list_len, test=False)
         except:
             return {'status_code': 100 }
 
