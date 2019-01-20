@@ -22,7 +22,8 @@ Now you can choose the smile face you like most from two main categories: big sm
 ## demo: SayCheese for painting
 
 <img src='./results/show/1.jpg' align="left" hight=800>
----
+
+------
 
 ## Prerequisites
 - Install PyTorch (we use version 1.0.0), Torch Vision and dependencies from http://pytorch.org
