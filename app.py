@@ -39,37 +39,41 @@ model_path = 'checkpoints/model_align/'
 load_epoch = 40
 
 # load pretrained GANimation model and run
-epoch_num = feedforward.find_epoch(model_path, load_epoch)
-load_filename_generator = 'net_epoch_%s_id_G.pth' % (epoch_num)
-load_filename_discriminator = 'net_epoch_%s_id_D.pth' % (epoch_num)
-pathG = os.path.join(model_path, load_filename_generator)
-pathD = os.path.join(model_path, load_filename_discriminator)
-convertor = feedforward.feedForward(pathG, pathD)
+# epoch_num = feedforward.find_epoch(model_path, load_epoch)
+# load_filename_generator = 'net_epoch_%s_id_G.pth' % (epoch_num)
+# load_filename_discriminator = 'net_epoch_%s_id_D.pth' % (epoch_num)
+# pathG = os.path.join(model_path, load_filename_generator)
+# pathD = os.path.join(model_path, load_filename_discriminator)
+# convertor = feedforward.feedForward(pathG, pathD)
 
 class make_cheese(Resource):
     def post(self):
 
         json_data = request.get_json(force=True)
 
-        if not 'image_key' in json_data:
-            return (json_data);
+        # if not 'image_key' in json_data:
+        #     return (json_data);
 
-        img_raw = decode_img(json_data):
+        # img_raw = decode_img(json_data):
 
-        # find original AU of input image using discriminator of GANimation, for test use only
-        try:
-            processed_img_dict = feedforward.img_processing(img_raw, convertor, test=False)
-        except:
-            return {'status_code': 100 }
+        # # find original AU of input image using discriminator of GANimation, for test use only
+        # try:
+        #     processed_img_dict = feedforward.img_processing(img_raw, convertor, test=False)
+        # except:
+        #     return {'status_code': 100 }
 
-        base64_img_str = encode_img(img_raw)
+        # base64_img_str = encode_img(img_raw)
         
-        for key in dict:
-            processed_img_dict[key] = [encode_img(img) for img in processed_img_dict[key]]
+        # for key in dict:
+        #     processed_img_dict[key] = [encode_img(img) for img in processed_img_dict[key]]
 
-        processed_img_dict['status_code'] = 0
+        # processed_img_dict['status_code'] = 0
 
-        return processed_img_dict
+        # return processed_img_dict
+
+        return {'big_smile': [json['image_key'], json['image_key'], json['image_key']],
+                'small_smile': [json['image_key'], json['image_key'], json['image_key']],
+                'status_code': 0}
 
 api.add_resource(make_cheese, '/api')
 
