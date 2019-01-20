@@ -200,7 +200,7 @@ def main():
 
     convertor = feedForward(pathG, pathD)
 
-    if_test = True # for test only
+    if_test = False # for test only
     #dict_smile_face = img_processing(img, convertor, original_AU, target_AU)
     result = img_processing(img_raw, convertor, test = if_test)
 
