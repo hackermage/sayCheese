@@ -10,11 +10,11 @@ Official implementation of [GANimation](http://www.albertpumarola.com/research/G
 
 Check out the repo for our ios app https://github.com/JinchengKim/Cruzhacks_iOS
 
-something here
+## demo: SayCheese for photo
 
 <img src='./results/show/11.jpg' align="left" hight=800>
 
-something here
+## demo: SayCheese for painting
 
 <img src='./results/show/1.jpg' align="left" hight=800>
 
