@@ -1,5 +1,5 @@
-<!-- <img src='http://www.albertpumarola.com/images/2018/GANimation/face1_cyc.gif' align="right" width=90>
- -->
+<img src='./results/gif/Mona_Lisa.gif' align="right" width=120>
+
 # GANimation: Anatomically-aware Facial Animation from a Single Image
 
 Official implementation of [GANimation](http://www.albertpumarola.com/research/GANimation/index.html). In this work we introduce a novel GAN conditioning scheme based on Action Units (AU) annotations, which describe in a continuous manifold the anatomical facial movements defining a human expression. Our approach permits controlling the magnitude of activation of each AU and combine several of them. 
