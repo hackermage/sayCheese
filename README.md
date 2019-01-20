@@ -17,7 +17,10 @@ First, put the pretrained model(s) anywhere you like, they are files named net_e
 
 To run demo:
 ```
-python feedforwar.py --model_path path/to/pretrained_model --load_epoch index_of_epoch_for_the_model --img_path path/to/img
+python feedforwar.py \
+--model_path path/to/pretrained_model \
+--load_epoch index_of_epoch_for_the_model \
+--img_path path/to/img
 ```
 
 ## Citation
