@@ -111,4 +111,5 @@ def face_place_back(origin_img, face_img, face_origin_pos, **kwargs):
 
             return processed_img, new_maskA
 
-    return processed_img, mask, rotate
+    #return processed_img, mask, rotate
+    return processed_img
