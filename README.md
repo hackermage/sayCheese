@@ -1,7 +1,7 @@
 # SayCheese
 # GANimation: Anatomically-aware Facial Animation from a Single Image
 
-<img src='./results/gif/Mona_Lisa.gif' align="right" width=200>
+<img src='./results/gif/Mona_Lisa.gif' align="right" width=180>
 
 Official implementation of [GANimation](http://www.albertpumarola.com/research/GANimation/index.html). In this work we introduce a novel GAN conditioning scheme based on Action Units (AU) annotations, which describe in a continuous manifold the anatomical facial movements defining a human expression. Our approach permits controlling the magnitude of activation of each AU and combine several of them. 
 
@@ -10,10 +10,15 @@ Official implementation of [GANimation](http://www.albertpumarola.com/research/G
 
 Check out the repo for our ios app https://github.com/JinchengKim/Cruzhacks_iOS
 
+something here
 
+<img src='./results/show/11.jpg' align="left" hight=800>
 
-<img src='./results/art/processedface_7-1547956681.jpg' align="left" hight=800>
+something here
 
+<img src='./results/show/1.jpg' align="left" hight=800>
+
+something here
 
 ## Prerequisites
 - Install PyTorch (we use version 1.0.0), Torch Vision and dependencies from http://pytorch.org
