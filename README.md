@@ -1,14 +1,19 @@
-# SayCheese
-# GANimation: Anatomically-aware Facial Animation from a Single Image
+# SayCheese: 
 
 <img src='./results/gif/Mona_Lisa.gif' align="right" width=180>
 
-Official implementation of [GANimation](http://www.albertpumarola.com/research/GANimation/index.html). In this work we introduce a novel GAN conditioning scheme based on Action Units (AU) annotations, which describe in a continuous manifold the anatomical facial movements defining a human expression. Our approach permits controlling the magnitude of activation of each AU and combine several of them. 
+In this project, we utilize Albert Pumarola's novel GAN conditioning scheme and build an easy-to-use ios app that can edit people's facial expression in both photos and paintings, bring him/her smile. See our home page at [Devpost](https://devpost.com/software/saycheese).
 
+Presently, our model can generate natrual looked smiles in different styles and intensities for a large group of different types of faces, and of couse we are working on improving the model's performance.
+
+Check out the repo for our ios app https://github.com/JinchengKim/Cruzhacks_iOS. For a simple tour of the app's usage, 
+1. take picture within the app, or open one from your album
+2. choose the face your want to SayCheese
+3. wait a moment to see the magic, and it's done!
+
+Now you can choose the smile face you like most from two main categories: big smile and small smile.
 <!-- This code was made public to share our research for the benefit of the scientific community. Do NOT use it for immoral purposes.
  -->
-
-Check out the repo for our ios app https://github.com/JinchengKim/Cruzhacks_iOS
 
 ## demo: SayCheese for photo
 
@@ -18,7 +23,6 @@ Check out the repo for our ios app https://github.com/JinchengKim/Cruzhacks_iOS
 
 <img src='./results/show/1.jpg' align="left" hight=800>
 
-something here
 
 ## Prerequisites
 - Install PyTorch (we use version 1.0.0), Torch Vision and dependencies from http://pytorch.org
@@ -37,7 +41,7 @@ python feedforward.py \
 ```
 
 ## Citation
-Our idea and work are based on Albert Pumarola's [GANimation](http://www.albertpumarola.com/images/2018/GANimation/teaser.png). For more information about the model please refer to the [[Project]](http://www.albertpumarola.com/research/GANimation/index.html) and [[paper]](https://arxiv.org/abs/1807.09251).
+Our idea and work are based on Albert Pumarola's [GANimation](http://www.albertpumarola.com/research/GANimation/index.html). For more information about the model please refer to the [[Project]](http://www.albertpumarola.com/research/GANimation/index.html) and [[paper]](https://arxiv.org/abs/1807.09251).
 ```
 @inproceedings{pumarola2018ganimation,
     title={GANimation: Anatomically-aware Facial Animation from a Single Image},
