@@ -18,7 +18,7 @@ class feedForward:
     def __init__(self, pathG, pathD):
         # load pre-trained generator here
         self._modelG = cruzhack_forward.generatorFoward(conv_dim=64, c_dim=17, repeat_num=6)
-        self._modelG.load_state_dict(torch.load(pathG))
+        self._modelG.load_state_dict(torch.load(pathG, map_location='cpu'))
         self._modelG.eval()
         self._transform = transforms.Compose([transforms.ToTensor(),
                                               transforms.Normalize(mean=[0.5, 0.5, 0.5],
@@ -26,7 +26,7 @@ class feedForward:
                                               ])
         #load pre-trained discriminator here
         self._modelD = cruzhack_forward.Discriminator(image_size=128, conv_dim=64, c_dim=17, repeat_num=6)
-        self._modelD.load_state_dict(torch.load(pathD))
+        self._modelD.load_state_dict(torch.load(pathD, map_location='cpu'))
         self._modelD.eval()
 
     def Foward(self, face, desired_expression):
@@ -111,7 +111,7 @@ def load_target_AU():
      [0.26, 0.13, 0.13, 0.22, 0.3 , 0.26, 0.12, 0.4 , 0.96, 1.37, 0.07, 0.27, 0.24, 0.21, 0.21, 0.25, 0.04]], dtype = np.float)
     return target_AU
 
-def img_processing(img_raw, convertor, test=True):
+def img_processing(img_raw, convertor, expression_num = 5, test=True):
 
     img = cv2.cvtColor(img_raw, cv2.COLOR_BGR2RGB)
 
@@ -126,7 +126,6 @@ def img_processing(img_raw, convertor, test=True):
 
     # work for 2 predefined expressions: big smile and small smile
     # set expression
-    expression_num = 5
 
     row_num = np.shape(target_AU)[0]
 
@@ -201,13 +200,13 @@ def main():
 
     convertor = feedForward(pathG, pathD)
 
-    if_test = False # for test only
+    if_test = True # for test only
     #dict_smile_face = img_processing(img, convertor, original_AU, target_AU)
     result = img_processing(img_raw, convertor, test = if_test)
 
     if if_test :
         timestamp = calendar.timegm(time.gmtime())
-        image_out_name = "./results/processedface_"+image_name+"-"+str(timestamp)+".jpg"
+        image_out_name = "./results/art/processedface_"+image_name+"-"+str(timestamp)+".jpg"
         cv2.imwrite(image_out_name, result)
         print("Processed image saved as %s" % image_out_name)
         #cv2.imshow('result', result/254.0)
