@@ -200,9 +200,10 @@ def main():
 
     convertor = feedForward(pathG, pathD)
 
-    if_test = True # for test only
+    if_test = False # for test only
+    expression_num = 10
     #dict_smile_face = img_processing(img, convertor, original_AU, target_AU)
-    result = img_processing(img_raw, convertor, test = if_test)
+    result = img_processing(img_raw, convertor, expression_num, test = if_test)
 
     if if_test :
         timestamp = calendar.timegm(time.gmtime())
@@ -212,12 +213,19 @@ def main():
         #cv2.imshow('result', result/254.0)
         #cv2.waitKey()
     else:
-        for i in range(5):
+        for i in range(expression_num):
             image_tmp_1 = result["big_smile"][i]
             image_tmp_2 = result["small_smile"][i]
-            cv2.imshow('big_smile', image_tmp_1/254.0)
-            cv2.imshow('small_smile', image_tmp_2/254.0)
-            cv2.waitKey()
+
+            timestamp = calendar.timegm(time.gmtime())
+            image_name_big = "./results/art/big_smile-"+str(i)+"-"+str(timestamp)+".jpg"
+            image_name_small = "./results/art/small_smile-"+str(i)+"-"+str(timestamp)+".jpg"
+
+            cv2.imwrite(image_name_big, image_tmp_1)
+            cv2.imwrite(image_name_small, image_tmp_2)
+            # cv2.imshow('big_smile', image_tmp_1/254.0)
+            # cv2.imshow('small_smile', image_tmp_2/254.0)
+            # cv2.waitKey()
 
 if __name__ == '__main__':
     main()

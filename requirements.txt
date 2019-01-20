@@ -4,7 +4,6 @@ tqdm
 dlib
 face_recognition
 opencv-contrib-python
--i https://pypi.org/simple
 aniso8601==4.1.0
 certifi==2018.11.29
 chardet==3.0.4
