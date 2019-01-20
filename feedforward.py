@@ -18,7 +18,7 @@ class feedForward:
     def __init__(self, pathG, pathD):
         # load pre-trained generator here
         self._modelG = cruzhack_forward.generatorFoward(conv_dim=64, c_dim=17, repeat_num=6)
-        self._modelG.load_state_dict(torch.load(pathG, map_location='cpu'))
+        self._modelG.load_state_dict(torch.load(pathG))
         self._modelG.eval()
         self._transform = transforms.Compose([transforms.ToTensor(),
                                               transforms.Normalize(mean=[0.5, 0.5, 0.5],
@@ -26,7 +26,7 @@ class feedForward:
                                               ])
         #load pre-trained discriminator here
         self._modelD = cruzhack_forward.Discriminator(image_size=128, conv_dim=64, c_dim=17, repeat_num=6)
-        self._modelD.load_state_dict(torch.load(pathD, map_location='cpu'))
+        self._modelD.load_state_dict(torch.load(pathD))
         self._modelD.eval()
 
     def Foward(self, face, desired_expression):
@@ -127,6 +127,7 @@ def img_processing(img_raw, convertor, test=True):
     # work for 2 predefined expressions: big smile and small smile
     # set expression
     expression_num = 5
+
     row_num = np.shape(target_AU)[0]
 
     expressions = np.ndarray((expression_num, row_num, 17), dtype = np.float)
