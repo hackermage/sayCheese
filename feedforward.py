@@ -172,7 +172,7 @@ def main():
     parser.add_argument('--img_path', type=str, 
                         default='/Users/xyli1905/Projects/Datasets/imgs_178/000009.png', 
                         help='path to the test image')
-    parser.add_argument('--model_path', type=str, default='./checkpoints/model_align/', 
+    parser.add_argument('--model_path', type=str, default='/Users/xyli1905/Projects/GANimation/checkpoints/model_align/', 
                          help='path to the pretrained model')
     parser.add_argument('--load_epoch', type=int, default=-1, help='specify the model to be loaded')
 
@@ -208,25 +208,23 @@ def main():
         #cv2.imshow('result', result/254.0)
         #cv2.waitKey()
     else:
-        img_hstack = img_raw
-        for i in range(expression_num):
-            image_tmp_1 = result["big_smile"][i]
-            image_tmp_2 = result["small_smile"][i]
+        # for i in range(expression_num):
+        #     image_tmp_1 = result["big_smile"][i]
+        #     image_tmp_2 = result["small_smile"][i]
 
-            timestamp = calendar.timegm(time.gmtime())
-            image_name_big = "./results/art/individual/big_smile-"+str(i)+"-"+str(timestamp)+".jpg"
-            image_name_small = "./results/art/individual/small_smile-"+str(i)+"-"+str(timestamp)+".jpg"
+        #     timestamp = calendar.timegm(time.gmtime())
+        #     image_name_big = "./results/art/individual/big_smile-"+str(i)+"-"+str(timestamp)+".jpg"
+        #     image_name_small = "./results/art/individual/small_smile-"+str(i)+"-"+str(timestamp)+".jpg"
 
-            cv2.imwrite(image_name_big, image_tmp_1)
-            cv2.imwrite(image_name_small, image_tmp_2)
-
-            img_hstack = np.hstack((img_hstack, image_tmp_1))
-
-            image_out_name = "./results/art/hstack_bigsmile_"+image_name+"-"+str(timestamp)+".jpg"
-            cv2.imwrite(image_out_name, img_hstack)
-            # cv2.imshow('big_smile', image_tmp_1/254.0)
-            # cv2.imshow('small_smile', image_tmp_2/254.0)
-            # cv2.waitKey()
+        #     cv2.imwrite(image_name_big, image_tmp_1)
+        #     cv2.imwrite(image_name_small, image_tmp_2)
+        timestamp = calendar.timegm(time.gmtime())
+        img_hstack = np.hstack((img_raw, result["big_smile"][0], result["big_smile"][1], result["big_smile"][2]))
+        image_out_name = "./results/art/hstack_bigsmile_"+image_name+"-"+str(timestamp)+".jpg"
+        cv2.imwrite(image_out_name, img_hstack)
+        # cv2.imshow('big_smile', image_tmp_1/254.0)
+        # cv2.imshow('small_smile', image_tmp_2/254.0)
+        # cv2.waitKey()
 
 if __name__ == '__main__':
     main()
