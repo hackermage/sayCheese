@@ -66,6 +66,7 @@ def find_epoch(model_path, load_epoch_num):
             for file in os.listdir(model_path):
                 if file.startswith("net_epoch_"):
                     epoch_num = max(epoch_num, int(file.split('_')[2]))
+            print("load epoch %d" % epoch_num)
         else:
             found = False
             for file in os.listdir(model_path):
@@ -164,19 +165,35 @@ def img_processing(img_raw, convertor, expression_num = 5, test=True):
 
         return dict_smile_face
 
+class input_options:
+    def __init__(self):
+        self._parser = argparse.ArgumentParser()
+        self._initialized = False
+
+    def initialize(self):
+        self._parser.add_argument('--img_path', type=str, 
+                                  default='/Users/xyli1905/Projects/Datasets/imgs_178/000009.png', 
+                                  help='path to the test image')
+        self._parser.add_argument('--model_path', type=str, 
+                                  default='/Users/xyli1905/Projects/Image_Processing/GANimation/checkpoints/model_align', 
+                                  help='path to the pretrained model')
+        self._parser.add_argument('--load_epoch', type=int, default=-1, help='specify the model to be loaded')
+
+        self.initialized = True
+
+    def parse(self):
+        if not self._initialized :
+            self.initialize()
+        self._args = self._parser.parse_args()
+
+        return self._args
+
 # =========================================================== #
 # below, the main(), is a demo for how to use the feedforward #
 # =========================================================== #
 def main():
-    parser = argparse.ArgumentParser(description='easy for input parameters')
-    parser.add_argument('--img_path', type=str, 
-                        default='/Users/xyli1905/Projects/Datasets/imgs_178/000009.png', 
-                        help='path to the test image')
-    parser.add_argument('--model_path', type=str, default='/Users/xyli1905/Projects/GANimation/checkpoints/model_align/', 
-                         help='path to the pretrained model')
-    parser.add_argument('--load_epoch', type=int, default=-1, help='specify the model to be loaded')
-
-    arg = parser.parse_args()
+    # load input parameters
+    arg = input_options().parse()
 
     image_name = arg.img_path.split('.')[-2]
     print(image_name)
@@ -208,6 +225,7 @@ def main():
         #cv2.imshow('result', result/254.0)
         #cv2.waitKey()
     else:
+        # dump individual processed image
         # for i in range(expression_num):
         #     image_tmp_1 = result["big_smile"][i]
         #     image_tmp_2 = result["small_smile"][i]
@@ -220,8 +238,9 @@ def main():
         #     cv2.imwrite(image_name_small, image_tmp_2)
         timestamp = calendar.timegm(time.gmtime())
         img_hstack = np.hstack((img_raw, result["big_smile"][0], result["big_smile"][1], result["big_smile"][2]))
-        image_out_name = "./results/art/hstack_bigsmile_"+image_name+"-"+str(timestamp)+".jpg"
+        image_out_name = "./results/samples/hstack_bigsmile_"+image_name+"-"+str(timestamp)+".jpg"
         cv2.imwrite(image_out_name, img_hstack)
+        print("Processed image saved as %s" % image_out_name)
         # cv2.imshow('big_smile', image_tmp_1/254.0)
         # cv2.imshow('small_smile', image_tmp_2/254.0)
         # cv2.waitKey()
